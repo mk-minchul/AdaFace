@@ -1,0 +1,7 @@
+pytorch-lightning==1.4.4 
+tqdm
+bcolz
+prettytable
+menpo
+mxnet
+opencv-python
