@@ -1,7 +1,7 @@
 # AdaFace: Quality Adaptive Margin for Face Recognition
 
 Official github repository for AdaFace: Quality Adaptive Margin for Face Recognition. 
-The paper is presented in CVPR 2022 (Oral).
+The paper (https://arxiv.org/abs/2204.00964) is presented in CVPR 2022 (Oral). 
 
 
 > Abstract: Recognition in low quality face datasets is challenging because facial attributes are obscured and degraded. Advances in margin-based loss functions have resulted in enhanced discriminability of faces in the embedding space. Further, previous studies have studied the effect of adaptive losses to assign more importance to misclassified (hard) examples. In this work, we introduce another aspect of adaptiveness in the loss function, namely the image quality. We argue that the strategy to emphasize misclassified samples should be adjusted according to their image quality. Specifically, the relative importance of easy and hard samples should be based on the sample's image quality. We propose a new loss function that emphasizes samples of different difficulty based on their image quality. Our method achieves this in the form of an adaptive margin function by approximating the image quality with feature norms. Extensive experiments show that our method, AdaFace, improves the face recognition performance over the state-of-the-art (SoTA) on four datasets (IJB-B, IJB-C, IJB-S and TinyFace).
