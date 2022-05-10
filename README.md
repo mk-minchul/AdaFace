@@ -39,6 +39,7 @@ from head import AdaFace
 B = 5
 embbedings = torch.randn((B, 512)).float()  # latent code
 norms = torch.norm(embbedings, 2, -1, keepdim=True)
+normalzied_embedding  = embbedings / norms
 labels =  torch.randint(70722, (B,))
 
 # instantiate AdaFace
@@ -50,7 +51,7 @@ adaface = AdaFace(embedding_size=512,
                   t_alpha=0.01,)
 
 # calculate loss
-cosine_with_margin = adaface(embbedings, norms, labels)
+cosine_with_margin = adaface(normalzied_embedding, norms, labels)
 loss = torch.nn.CrossEntropyLoss()(cosine_with_margin, labels)
 ```
 
