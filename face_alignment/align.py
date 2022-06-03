@@ -7,6 +7,7 @@ from PIL import Image
 from tqdm import tqdm
 import random
 from datetime import datetime
+mtcnn_model = mtcnn.MTCNN(device='cuda:0', crop_size=(112, 112))
 
 def add_padding(pil_img, top, right, bottom, left, color=(0,0,0)):
     width, height = pil_img.size
@@ -17,7 +18,6 @@ def add_padding(pil_img, top, right, bottom, left, color=(0,0,0)):
     return result
 
 def get_aligned_face(image_path):
-    mtcnn_model = mtcnn.MTCNN(device='cuda:0', crop_size=(112, 112))
     img = Image.open(image_path).convert('RGB')
     # find face
     try:

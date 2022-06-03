@@ -220,7 +220,11 @@ class CustomImageFolderDataset(datasets.ImageFolder):
         if np.random.random() < self.crop_augmentation_prob:
             # RandomResizedCrop augmentation
             new = np.zeros_like(np.array(sample))
-            orig_W, orig_H = F._get_image_size(sample)
+            if hasattr(F, '_get_image_size'):
+                orig_W, orig_H = F._get_image_size(sample)
+            else:
+                # torchvision 0.11.0 and above
+                orig_W, orig_H = F.get_image_size(sample)
             i, j, h, w = self.random_resized_crop.get_params(sample,
                                                             self.random_resized_crop.scale,
                                                             self.random_resized_crop.ratio)
