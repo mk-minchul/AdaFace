@@ -15,6 +15,9 @@ The paper (https://arxiv.org/abs/2204.00964) is presented in CVPR 2022 (Oral).
 }
 ```
 
+
+🐣:  An interactive of demo available at Replicate: <a href="https://replicate.com/mk-minchul/adaface"><img src="https://replicate.com/mk-minchul/adaface/badge"></a>
+
 <img src="assets/main_figure.png"  />
 
 ### Demo Comparison between AdaFace and ArcFace on Low Quality Images
