@@ -17,6 +17,12 @@ The paper (https://arxiv.org/abs/2204.00964) is presented in CVPR 2022 (Oral).
 
 <img src="assets/main_figure.png"/>
 
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adaface-quality-adaptive-margin-for-face/face-verification-on-ijb-b)](https://paperswithcode.com/sota/face-verification-on-ijb-b?p=adaface-quality-adaptive-margin-for-face)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adaface-quality-adaptive-margin-for-face/face-recognition-closed-set-on-tinyface)](https://paperswithcode.com/sota/face-recognition-closed-set-on-tinyface?p=adaface-quality-adaptive-margin-for-face)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adaface-quality-adaptive-margin-for-face/surveillance-to-booking-on-ijb-s)](https://paperswithcode.com/sota/surveillance-to-booking-on-ijb-s?p=adaface-quality-adaptive-margin-for-face)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adaface-quality-adaptive-margin-for-face/surveillance-to-single-on-ijb-s)](https://paperswithcode.com/sota/surveillance-to-single-on-ijb-s?p=adaface-quality-adaptive-margin-for-face)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adaface-quality-adaptive-margin-for-face/surveillance-to-surveillance-on-ijb-s)](https://paperswithcode.com/sota/surveillance-to-surveillance-on-ijb-s?p=adaface-quality-adaptive-margin-for-face)
+
 ### Repository Updates
 - [x] 5 Minute video presentation uploaded.
 
