@@ -35,8 +35,8 @@ if __name__ == '__main__':
     for fname in sorted(os.listdir(test_image_path)):
         path = os.path.join(test_image_path, fname)
         aligned_rgb_img = align.get_aligned_face(path)
-        input = to_input(aligned_rgb_img)
-        feature, _ = model(input)
+        bgr_tensor_input = to_input(aligned_rgb_img)
+        feature, _ = model(bgr_tensor_input)
         features.append(feature)
 
     similarity_scores = torch.cat(features) @ torch.cat(features).T

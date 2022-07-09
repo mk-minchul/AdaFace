@@ -72,6 +72,7 @@ cosine_with_margin = adaface(normalized_embedding, norms, labels)
 loss = torch.nn.CrossEntropyLoss()(cosine_with_margin, labels)
 ```
 
+
 # Installation
 
 ```
@@ -112,7 +113,8 @@ python main.py \
 ```
 
 # Pretrained Models
-
+Note that our pretrained model takes the input in BGR color channel. 
+This is different from the InsightFace released model which uses RGB color channel. 
 
 | Arch | Dataset    | Link                                                                                         |
 |------|------------|----------------------------------------------------------------------------------------------|
@@ -129,13 +131,22 @@ python main.py \
 
 
 # Inferece
-Download the pretrained adaface model and place it in `pretrained/`
 
-For inference, refer to 
+### Example using provided sample images
+AdaFace takes input images that are preproccsed. 
+The preprocessing step involves 
+1. aligned with facial landmark (using MTCNN) and 
+2. cropped to 112x112x3 size whose color channel is BGR order. 
+
+We provide the code for performing the preprocessing step. 
+For using pretrained AdaFace model for inference, 
+
+1. Download the pretrained adaface model and place it in `pretrained/`
+
+2. For using pretrained AdaFace on below 3 images, run 
 ```
 python inference.py
 ```
-We provide example images for inference. 
 
 |                              img1                              |                              img2                              |                                                           img3 |
 |:--------------------------------------------------------------:|:--------------------------------------------------------------:|---------------------------------------------------------------:|
@@ -147,6 +158,25 @@ tensor([[ 1.0000,  0.7334, -0.0655],
         [ 0.7334,  1.0000, -0.0277],
         [-0.0655, -0.0277,  1.0000]], grad_fn=<MmBackward0>)
 ```
+
+### General Inference Guideline
+In a nutshell, inference code looks as below.
+```python
+from face_alignment import align
+from inference import load_pretrained_model, to_input
+
+model = load_pretrained_model('ir_50')
+path = 'path_to_the_image'
+aligned_rgb_img = align.get_aligned_face(path)
+bgr_input = to_input(aligned_rgb_img)
+feature, _ = model(bgr_input)
+```
+
+- Note that AdaFace model is a vanilla pytorch model which takes in `bgr_input` which is 112x112x3 
+torch tensor with BGR color channel whose value is normalized with `mean=0.5` and `std=0.5`, 
+as in [to_input()](https://github.com/mk-minchul/AdaFace/blob/d8114b3ca8c54cd81ef59ac34c19eda1c548ca17/inference.py#L22)
+- When preprocessing step produces error, it is likely that the MTCNN cannot find face in an image. 
+Refer to [issues/28](https://github.com/mk-minchul/AdaFace/issues/28) for the discussion.
 # Validation
 
 ## High Quality Image Validation Sets (LFW, CFPFP, CPLFW, CALFW, AGEDB)
