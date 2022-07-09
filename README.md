@@ -150,7 +150,7 @@ python inference.py
 
 |                              img1                              |                              img2                              |                                                           img3 |
 |:--------------------------------------------------------------:|:--------------------------------------------------------------:|---------------------------------------------------------------:|
-| <img src="face_alignment/test_images/img1.jpeg" width="200" /> | <img src="face_alignment/test_images/img2.jpeg" width="200" /> | <img src="face_alignment/test_images/img3.jpeg" width="200" /> |
+| <img src="face_alignment/test_images/img1.jpeg" width="215" /> | <img src="face_alignment/test_images/img2.jpeg" width="130" /> | <img src="face_alignment/test_images/img3.jpeg" width="191" /> |
 
 The similarity score result should be 
 ```
