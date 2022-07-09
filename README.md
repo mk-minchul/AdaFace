@@ -15,7 +15,16 @@ The paper (https://arxiv.org/abs/2204.00964) is presented in CVPR 2022 (Oral).
 }
 ```
 
-<img src="assets/main_figure.png"  />
+<img src="assets/main_figure.png"/>
+
+### Repository Updates
+- [x] 5 Minute video presentation uploaded.
+
+### 5 Minute Video Presentation
+https://www.youtube.com/watch?v=NfHzn6epAHM
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/NfHzn6epAHM/0.jpg)](https://www.youtube.com/watch?v=NfHzn6epAHM "AdaFace 5 minute video presentation")
+The talk was given during the CVPR 2022 Conference. 
+Thank you all who showed interest in the paper during the oral and poster session. 
 
 ### Demo Comparison between AdaFace and ArcFace on Low Quality Images
 
