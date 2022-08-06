@@ -30,6 +30,8 @@ def get_args():
     parent_parser.add_argument('--evaluate', action='store_true', help='use with start_from_model_statedict')
     parent_parser.add_argument('--resume_from_checkpoint', type=str, default='')
     parent_parser.add_argument('--start_from_model_statedict', type=str, default='')
+    parent_parser.add_argument('--use_wandb', action='store_true')
+    parent_parser.add_argument('--custom_num_class', type=int, default=-1)
 
     parser = add_task_arguments(parent_parser)
     args = parser.parse_args()
