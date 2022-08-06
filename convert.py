@@ -75,15 +75,21 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='for face verification')
     parser.add_argument("-r", "--rec_path", help="mxnet record file path", default='./faces_emore', type=str)
+    parser.add_argument("--make_image_files", action='store_true')
+    parser.add_argument("--make_validation_memfiles", action='store_true')
 
     args = parser.parse_args()
     rec_path = Path(args.rec_path)
-    save_rec_to_img_dir(rec_path)
-    
-    # bin_files = ['agedb_30', 'cfp_fp', 'lfw', 'calfw', 'cfp_ff', 'cplfw', 'vgg2_fp']
-    bin_files = list(filter(lambda x: os.path.splitext(x)[1] in ['.bin'], os.listdir(args.rec_path)))
-    bin_files = [i.split('.')[0] for i in bin_files]
-    
-    for i in range(len(bin_files)):
-        load_bin(rec_path/(bin_files[i]+'.bin'), rec_path/bin_files[i])
+    if args.make_image_files:
+        # unfolds train.rec to image folders
+        save_rec_to_img_dir(rec_path)
+
+    if args.make_validation_memfiles:
+        # for saving memory usage during training
+        # bin_files = ['agedb_30', 'cfp_fp', 'lfw', 'calfw', 'cfp_ff', 'cplfw', 'vgg2_fp']
+        bin_files = list(filter(lambda x: os.path.splitext(x)[1] in ['.bin'], os.listdir(args.rec_path)))
+        bin_files = [i.split('.')[0] for i in bin_files]
+
+        for i in range(len(bin_files)):
+            load_bin(rec_path/(bin_files[i]+'.bin'), rec_path/bin_files[i])
 
