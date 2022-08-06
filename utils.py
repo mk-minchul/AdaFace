@@ -90,3 +90,38 @@ def all_gather(data):
         data_list.append(pickle.loads(buffer))
 
     return data_list
+
+
+def get_num_class(hparams):
+    # getting number of subjects in the dataset
+    if hparams.custom_num_class != -1:
+        return hparams.custom_num_class
+
+    if 'faces_emore' in hparams.train_data_path.lower():
+        # MS1MV2
+        class_num = 70722 if hparams.train_data_subset else 85742
+    elif 'ms1m-retinaface-t1' in hparams.train_data_path.lower():
+        # MS1MV3
+        assert not hparams.train_data_subset
+        class_num = 93431
+    elif 'faces_vgg_112x112' in hparams.train_data_path.lower():
+        # VGGFace2
+        assert not hparams.train_data_subset
+        class_num = 9131
+    elif 'faces_webface_112x112' in hparams.train_data_path.lower():
+        # CASIA-WebFace
+        assert not hparams.train_data_subset
+        class_num = 10572
+    elif 'webface4m' in hparams.train_data_path.lower():
+        assert not hparams.train_data_subset
+        class_num = 205990
+    elif 'webface12m' in hparams.train_data_path.lower():
+        assert not hparams.train_data_subset
+        class_num = 617970
+    elif 'webface42m' in hparams.train_data_path.lower():
+        assert not hparams.train_data_subset
+        class_num = 2059906
+    else:
+        raise ValueError('Check your train_data_path', hparams.train_data_path)
+
+    return class_num
