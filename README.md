@@ -86,7 +86,7 @@ pip install -r requirements.txt
 1. Download MS1M-ArcFace (85K ids/5.8M images) from [InsightFace](https://github.com/deepinsight/insightface/tree/master/recognition/_datasets_) and unzip at DATASET_ROOT
 2. Unpack mxrecord files to imgs with the following code.
 ```
-python convert.py --rec_path <DATASET_ROOT>/faces_emore
+python convert.py --rec_path <DATASET_ROOT>/faces_emore --make_image_files --make_validation_memfiles
 ```
 
 # Train
