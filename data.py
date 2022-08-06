@@ -62,7 +62,7 @@ class DataModule(pl.LightningDataModule):
 
             # checking same list for subseting
             if self.train_data_path == 'faces_emore/imgs' and self.train_data_subset:
-                with open('ms1mv2_train_subset_index.txt', 'r') as f:
+                with open('assets/ms1mv2_train_subset_index.txt', 'r') as f:
                     subset_index = [int(i) for i in f.read().split(',')]
 
                 # remove too few example identites
