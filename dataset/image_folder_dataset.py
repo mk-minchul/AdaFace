@@ -42,6 +42,7 @@ class CustomImageFolderDataset(datasets.ImageFolder):
         """
         path, target = self.samples[index]
         sample = self.loader(path)
+        sample = Image.fromarray(np.asarray(sample)[:,:,::-1])
 
         if self.swap_color_channel:
             # swap RGB to BGR if sample is in RGB

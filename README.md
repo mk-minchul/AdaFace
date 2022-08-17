@@ -25,6 +25,7 @@ The paper (https://arxiv.org/abs/2204.00964) is presented in CVPR 2022 (Oral).
 
 ### Repository Updates
 - [x] 5 Minute video presentation uploaded.
+- [x] Added the option to directly train with InsightFace dataset (train.rec) files without extracting images.
 
 ### 5 Minute Video Presentation
 [![IMAGE ALT TEXT](assets/video_thumbnail.png)](https://www.youtube.com/watch?v=NfHzn6epAHM "AdaFace 5 minute video presentation")
@@ -82,35 +83,9 @@ conda install scikit-image matplotlib pandas scikit-learn
 pip install -r requirements.txt
 ```
 
-# Dataset (MS1MV2)
-1. Download MS1M-ArcFace (85K ids/5.8M images) from [InsightFace](https://github.com/deepinsight/insightface/tree/master/recognition/_datasets_) and unzip at DATASET_ROOT
-2. Unpack mxrecord files to imgs with the following code.
-```
-python convert.py --rec_path <DATASET_ROOT>/faces_emore --make_image_files --make_validation_memfiles
-```
-
-# Train
-```
-# training small model (resnet18) on a subset of MS1MV2 dataset
-python main.py \
-    --data_root <DATASET_ROOT> \
-    --train_data_path faces_emore/imgs \
-    --val_data_path faces_emore \
-    --train_data_subset \
-    --prefix run_ir18_ms1mv2_subset \
-    --gpus 2 \
-    --use_16bit \
-    --batch_size 512 \
-    --num_workers 16 \
-    --epochs 26 \
-    --lr_milestones 12,20,24 \
-    --head adaface \
-    --m 0.4 \
-    --h 0.333 \
-    --low_res_augmentation_prob 0.2 \
-    --crop_augmentation_prob 0.2 \
-    --photometric_augmentation_prob 0.2
-```
+# Train (Preapring Dataset and Training Scripts)
+- Please refer to [README_TRAIN.md](./README_TRAIN.md)
+- [IMPORTANT] Note that our implementation assumes that input to the model is `BGR` color channel as in `cv2` package. InsightFace models assume `RGB` color channel as in `PIL` package. So all our evaluation code uses `BGR` color channel with `cv2` package.
 
 # Pretrained Models
 Note that our pretrained model takes the input in BGR color channel. 

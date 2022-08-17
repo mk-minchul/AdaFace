@@ -11,7 +11,7 @@ from torchvision import transforms as trans
 import os
 import numbers
 
-def save_rec_to_img_dir(rec_path, save_correct_channel_order=False, save_as_png=False):
+def save_rec_to_img_dir(rec_path, swap_color_channel=False, save_as_png=False):
 
     save_path = rec_path/'imgs'
     if not save_path.exists():
@@ -28,7 +28,8 @@ def save_rec_to_img_dir(rec_path, save_correct_channel_order=False, save_as_png=
         else:
             label = int(header.label)
 
-        if save_correct_channel_order:
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        if swap_color_channel:
             # this option saves the image in the right color.
             # but the training code uses PIL (RGB)
             # and validation code uses Cv2 (BGR)
@@ -77,12 +78,13 @@ if __name__ == '__main__':
     parser.add_argument("-r", "--rec_path", help="mxnet record file path", default='./faces_emore', type=str)
     parser.add_argument("--make_image_files", action='store_true')
     parser.add_argument("--make_validation_memfiles", action='store_true')
+    parser.add_argument("--swap_color_channel", action='store_true')
 
     args = parser.parse_args()
     rec_path = Path(args.rec_path)
     if args.make_image_files:
         # unfolds train.rec to image folders
-        save_rec_to_img_dir(rec_path)
+        save_rec_to_img_dir(rec_path, swap_color_channel=args.swap_color_channel)
 
     if args.make_validation_memfiles:
         # for saving memory usage during training
