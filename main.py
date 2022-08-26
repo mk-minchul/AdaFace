@@ -4,7 +4,7 @@ import torch.utils.data
 import torch.utils.data.distributed
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
-from pytorch_lightning.loggers import CSVLogger
+from pytorch_lightning.loggers import CSVLogger, WandbLogger
 from pytorch_lightning import seed_everything
 import config
 import os
@@ -32,6 +32,11 @@ def main(args):
     # create logger
     csv_logger = CSVLogger(save_dir=hparams.output_dir, name='result')
     my_loggers = [csv_logger]
+    if args.use_wandb:
+        wandb_logger = WandbLogger(save_dir=hparams.output_dir,
+                                   name=os.path.basename(args.output_dir), project='adaface_face_recognition')
+        my_loggers.append(wandb_logger)
+
     resume_from_checkpoint = hparams.resume_from_checkpoint if hparams.resume_from_checkpoint else None
 
     trainer = pl.Trainer(resume_from_checkpoint=resume_from_checkpoint,

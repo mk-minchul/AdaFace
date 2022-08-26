@@ -1,5 +1,3 @@
-import sys
-import os
 import torch
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
@@ -17,24 +15,13 @@ class Trainer(LightningModule):
         super(Trainer, self).__init__()
         self.save_hyperparameters()  # sets self.hparams
 
-        if self.hparams.train_data_path == 'faces_emore/imgs':
-            class_num = 70722 if self.hparams.train_data_subset else 85742
-        elif self.hparams.train_data_path == 'ms1m-retinaface-t1/imgs':
-            assert not self.hparams.train_data_subset
-            class_num = 93431
-        elif self.hparams.train_data_path == 'WebFace4M':
-            assert not self.hparams.train_data_subset
-            class_num = 205990
-        else:
-            raise ValueError('Check your train_data_path', self.hparams.train_data_path)
-
-        self.class_num = class_num
+        self.class_num = utils.get_num_class(self.hparams)
         print('classnum: {}'.format(self.class_num))
 
         self.model = net.build_model(model_name=self.hparams.arch)
         self.head = head.build_head(head_type=self.hparams.head,
                                      embedding_size=512,
-                                     class_num=class_num,
+                                     class_num=self.class_num,
                                      m=self.hparams.m,
                                      h=self.hparams.h,
                                      t_alpha=self.hparams.t_alpha,

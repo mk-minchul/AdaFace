@@ -9,7 +9,9 @@ def get_args():
     parent_parser.add_argument('--data_root', type=str, default='')
     parent_parser.add_argument('--train_data_path', type=str, default='faces_emore/imgs')
     parent_parser.add_argument('--val_data_path', type=str, default='faces_emore')
+    parent_parser.add_argument('--use_mxrecord', action='store_true')
     parent_parser.add_argument('--train_data_subset', action='store_true')
+    parent_parser.add_argument('--swap_color_channel', action='store_true')
     parent_parser.add_argument('--prefix', type=str, default='default')
     parent_parser.add_argument('--gpus', type=int, default=1, help='how many gpus')
     parent_parser.add_argument('--distributed_backend', type=str, default='ddp', choices=('dp', 'ddp', 'ddp2'),)
@@ -30,6 +32,8 @@ def get_args():
     parent_parser.add_argument('--evaluate', action='store_true', help='use with start_from_model_statedict')
     parent_parser.add_argument('--resume_from_checkpoint', type=str, default='')
     parent_parser.add_argument('--start_from_model_statedict', type=str, default='')
+    parent_parser.add_argument('--use_wandb', action='store_true')
+    parent_parser.add_argument('--custom_num_class', type=int, default=-1)
 
     parser = add_task_arguments(parent_parser)
     args = parser.parse_args()
@@ -54,7 +58,7 @@ def add_task_arguments(parser):
     parser.add_argument('--momentum', default=0.9, type=float, metavar='M')
     parser.add_argument('--weight_decay', default=1e-4, type=float)
 
-    parser.add_argument('--head', default='adaface', type=str, choices=('adaface'))
+    parser.add_argument('--head', default='adaface', type=str)
     parser.add_argument('--m', default=0.5, type=float)
     parser.add_argument('--h', default=0.0, type=float)
     parser.add_argument('--s', type=float, default=64.0)
