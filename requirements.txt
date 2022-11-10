@@ -1,6 +1,6 @@
 pytorch-lightning==1.4.4 
 tqdm
-bcolz
+bcolz-zipline
 prettytable
 menpo
 mxnet
