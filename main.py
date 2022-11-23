@@ -40,7 +40,7 @@ def main(args):
 
     resume_from_checkpoint = hparams.resume_from_checkpoint if hparams.resume_from_checkpoint else None
 
-    params = inspect.signature(pl.Trainer).values()
+    params = inspect.signature(pl.Trainer).parameters.values()
     if 'strategy' in [param.name for param in params]:
         # recent pytorch lightning
         trainer = pl.Trainer(resume_from_checkpoint=resume_from_checkpoint,
