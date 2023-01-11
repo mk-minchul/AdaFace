@@ -24,8 +24,12 @@ The paper (https://arxiv.org/abs/2204.00964) is presented in CVPR 2022 (Oral).
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adaface-quality-adaptive-margin-for-face/surveillance-to-surveillance-on-ijb-s)](https://paperswithcode.com/sota/surveillance-to-surveillance-on-ijb-s?p=adaface-quality-adaptive-margin-for-face)
 
 ### Repository Updates
+- [x] Pytorch Lightning 1.8 compatibility is tested. 
 - [x] 5 Minute video presentation uploaded.
 - [x] Added the option to directly train with InsightFace dataset (train.rec) files without extracting images.
+
+### News
+- You can also check out our new paper `Cluster and Aggregate (CAFace, NeurIPS2022)` [Link](https://paperswithcode.com/paper/cluster-and-aggregate-face-recognition-with) for video based face recognition. TLDR: Face recognition with long probe videos.
 
 ### 5 Minute Video Presentation
 [![IMAGE ALT TEXT](assets/video_thumbnail.png)](https://www.youtube.com/watch?v=NfHzn6epAHM "AdaFace 5 minute video presentation")
