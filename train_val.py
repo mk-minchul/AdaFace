@@ -35,6 +35,31 @@ class Trainer(LightningModule):
             self.model.load_state_dict({key.replace('model.', ''):val
                                         for key,val in ckpt['state_dict'].items() if 'model.' in key})
 
+    def get_current_lr(self):
+        scheduler = None
+        if scheduler is None:
+            try:
+                # pytorch lightning >= 1.8
+                scheduler = self.trainer.lr_scheduler_configs[0].scheduler
+            except:
+                pass
+
+        if scheduler is None:
+            # pytorch lightning <=1.7
+            try:
+                scheduler = self.trainer.lr_schedulers[0]['scheduler']
+            except:
+                pass
+
+        if scheduler is None:
+            raise ValueError('lr calculation not successful')
+
+        if isinstance(scheduler, lr_scheduler._LRScheduler):
+            lr = scheduler.get_last_lr()[0]
+        else:
+            lr = scheduler.get_epoch_values(self.current_epoch)[0]
+        return lr
+
 
     def forward(self, images, labels):
         embeddings, norms = self.model(images)
@@ -50,8 +75,7 @@ class Trainer(LightningModule):
 
         cos_thetas, norms, embeddings, labels = self.forward(images, labels)
         loss_train = self.cross_entropy_loss(cos_thetas, labels)
-        lr = self.trainer.lr_schedulers[0]['scheduler'].get_last_lr()[0]
-
+        lr = self.get_current_lr()
         # log
         self.log('lr', lr, on_step=True, on_epoch=True, logger=True)
         self.log('train_loss', loss_train, on_step=True, on_epoch=True, logger=True)

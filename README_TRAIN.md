@@ -52,7 +52,7 @@ It uses the directory as label structure, and you can swap it with your own data
 
 #### Dataset preparation steps for InsightFace dataset
 
-1. Download the dataset from https://github.com/deepinsight/insightface/tree/master/recognition/_datasets_
+1. Download the dataset from [insightface link](https://github.com/deepinsight/insightface/tree/master/recognition/_datasets_)
 2. Unzip it to a desired location, `DATASET_ROOT`  _ex)_ `/data/`.
 3. The result folder we will call `DATASET_NAME`, ex) `faces_webface_112x112`.
 4. For preprocessing run
