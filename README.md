@@ -86,6 +86,22 @@ conda activate adaface
 conda install scikit-image matplotlib pandas scikit-learn 
 pip install -r requirements.txt
 ```
+<details>
+<summary>
+<big><b>Docker Installation</b></big>
+</summary> 
+Note: Install <a href="https:https://github.com/NVIDIA/nvidia-docker">NVIDIA Container Toolkit</a> 
+- Install 
+```js
+sudo docker build -t adaface .
+```
+- Run
+```js
+sudo docker run --gpus all -v ${PWD}:/adaface adaface
+```
+
+</details> 
+
 
 # Train (Preapring Dataset and Training Scripts)
 - Please refer to [README_TRAIN.md](./README_TRAIN.md)
