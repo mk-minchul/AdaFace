@@ -90,7 +90,8 @@ pip install -r requirements.txt
 <summary>
 <big><b>Docker Installation</b></big>
 </summary> 
-Note: Install <a href="https:https://github.com/NVIDIA/nvidia-docker">NVIDIA Container Toolkit</a> 
+Note: Install <a href="https:https://github.com/NVIDIA/nvidia-docker">NVIDIA Container Toolkit</a>  
+
 - Install 
 ```js
 sudo docker build -t adaface .
@@ -125,7 +126,7 @@ This is different from the InsightFace released model which uses RGB color chann
 | R100 | WebFace12M | [gdrive](https://drive.google.com/file/d/1dswnavflETcnAuplZj1IOKKP0eM8ITgT/view?usp=sharing) |
 
 
-# Inferece
+# Inference
 
 ### Example using provided sample images
 AdaFace takes input images that are preproccsed. 
