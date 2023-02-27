@@ -90,7 +90,7 @@ pip install -r requirements.txt
 <summary>
 <big><b>Docker Installation</b></big>
 </summary> 
-Note: Install <a href="https:https://github.com/NVIDIA/nvidia-docker">NVIDIA Container Toolkit</a>  
+Note: Install <a href="https://github.com/NVIDIA/nvidia-container-toolkit.git">NVIDIA Container Toolkit</a>  
 
 - Install 
 ```js
