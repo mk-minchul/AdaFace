@@ -3,7 +3,6 @@ import pickle
 import torch
 import torch.distributed as dist
 
-
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
     __getattr__ = dict.get
@@ -37,14 +36,31 @@ def is_dist_avail_and_initialized():
     return True
 
 def get_world_size():
+    try:
+        return int(os.environ["SLURM_TASKS_PER_NODE"])
+    except Exception as e:
+        print("SLURM not detected fro infering world size", os.environ("SLURM_TASKS_PER_NODE"), flush=True)
+        pass
     if not is_dist_avail_and_initialized():
         return 1
     return dist.get_world_size()
 
 def get_local_rank():
+    try:
+        return int(os.environ["SLURM_LOCALID"])
+    except Exception as e:
+        print("SLURM NOT DETECTED FOR INFEREING LOCAL ID", flush=True)
+        pass
     if not is_dist_avail_and_initialized():
         return 0
-    return int(os.environ["LOCAL_RANK"])
+    
+    try:
+        return int(os.environ["LOCAL_RANK"])
+    except Exception as e:
+        print("env varaiable LOCAL_RANK is NOT SET, setting it though dist", flush=True)
+        print("local rank is ", dist.get_rank()," and world size is ", get_world_size(), flush=True)
+        return int(dist.get_rank())
+    
 
 def all_gather(data):
     """

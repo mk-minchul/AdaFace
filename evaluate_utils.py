@@ -6,22 +6,22 @@ import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.decomposition import PCA
 import sklearn
+from collections import OrderedDict
 from scipy import interpolate
 
 def get_val_data(data_path):
-    agedb_30, agedb_30_issame = get_val_pair(data_path, 'agedb_30')
-    cfp_fp, cfp_fp_issame = get_val_pair(data_path, 'cfp_fp')
-    lfw, lfw_issame = get_val_pair(data_path, 'lfw')
-    cplfw, cplfw_issame = get_val_pair(data_path, 'cplfw')
-    calfw, calfw_issame = get_val_pair(data_path, 'calfw')
-    return agedb_30, cfp_fp, lfw, agedb_30_issame, cfp_fp_issame, lfw_issame, cplfw, cplfw_issame, calfw, calfw_issame
+    all_val_sets = list(filter(lambda elt : elt[-4:] == ".bin", os.listdir(data_path)))
+    returned_dict = OrderedDict()
+    for set_name in all_val_sets:
+        set_name =set_name [:-4]
+        returned_dict[set_name] = get_val_pair(data_path, set_name)
+    return returned_dict
 
 def get_val_pair(path, name, use_memfile=True):
     if use_memfile:
         mem_file_dir = os.path.join(path, name, 'memfile')
         mem_file_name = os.path.join(mem_file_dir, 'mem_file.dat')
         if os.path.isdir(mem_file_dir):
-            print('laoding validation data memfile')
             np_array = read_memmap(mem_file_name)
         else:
             os.makedirs(mem_file_dir)
