@@ -3,6 +3,7 @@ import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 from pytorch_lightning.core import LightningModule
 from torch.nn import CrossEntropyLoss
+from torch.nn import Module as TorchModule
 import evaluate_utils
 import head
 import net
@@ -14,6 +15,8 @@ class Trainer(LightningModule):
     def __init__(self, **kwargs):
         super(Trainer, self).__init__()
         self.save_hyperparameters()  # sets self.hparams
+        self.val_dataname_to_idx = None
+        self.test_dataname_to_idx = None
 
         self.class_num = utils.get_num_class(self.hparams)
         print('classnum: {}'.format(self.class_num))
@@ -88,7 +91,7 @@ class Trainer(LightningModule):
     def validation_step(self, batch, batch_idx):
         images, labels, dataname, image_index = batch
         embeddings, norms = self.model(images)
-
+        
         fliped_images = torch.flip(images, dims=[3])
         flipped_embeddings, flipped_norms = self.model(fliped_images)
         stacked_embeddings = torch.stack([embeddings, flipped_embeddings], dim=0)
@@ -115,10 +118,12 @@ class Trainer(LightningModule):
             }
 
     def validation_epoch_end(self, outputs):
-
         all_output_tensor, all_norm_tensor, all_target_tensor, all_dataname_tensor = self.gather_outputs(outputs)
 
-        dataname_to_idx = {"agedb_30": 0, "cfp_fp": 1, "lfw": 2, "cplfw": 3, "calfw": 4}
+
+        if self.val_dataname_to_idx is None:
+            self.val_dataname_to_idx = self.trainer.val_dataloaders[0].dataset.dataname_to_idx
+        dataname_to_idx = self.val_dataname_to_idx#{"agedb_30": 0, "cfp_fp": 1, "lfw": 2, "cplfw": 3, "calfw": 4}
         idx_to_dataname = {val: key for key, val in dataname_to_idx.items()}
         val_logs = {}
         for dataname_idx in all_dataname_tensor.unique():
@@ -139,7 +144,6 @@ class Trainer(LightningModule):
             val_logs[f'{dataname}_val_acc'] for dataname in dataname_to_idx.keys() if f'{dataname}_val_acc' in val_logs
         ])
         val_logs['epoch'] = self.current_epoch
-
         for k, v in val_logs.items():
             # self.log(name=k, value=v, rank_zero_only=True)
             self.log(name=k, value=v)
@@ -150,10 +154,12 @@ class Trainer(LightningModule):
         return self.validation_step(batch, batch_idx)
 
     def test_epoch_end(self, outputs):
-
         all_output_tensor, all_norm_tensor, all_target_tensor, all_dataname_tensor = self.gather_outputs(outputs)
 
-        dataname_to_idx = {"agedb_30": 0, "cfp_fp": 1, "lfw": 2, "cplfw": 3, "calfw": 4}
+        if self.test_dataname_to_idx is None:
+            self.test_dataname_to_idx = self.trainer.test_dataloaders[0].dataset.dataname_to_idx
+
+        dataname_to_idx = self.test_dataname_to_idx # {"agedb_30": 0, "cfp_fp": 1, "lfw": 2, "cplfw": 3, "calfw": 4}
         idx_to_dataname = {val: key for key, val in dataname_to_idx.items()}
         test_logs = {}
         for dataname_idx in all_dataname_tensor.unique():
