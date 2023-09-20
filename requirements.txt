@@ -1,8 +1,12 @@
 pytorch-lightning==1.8.6
-pytorch<=1.13.1
+torch<=1.13.1
 tqdm
 bcolz-zipline
 prettytable
 menpo
 mxnet
 opencv-python
+scikit-learn
+torchvision<=0.14.1
+pandas
+numpy<=1.23
