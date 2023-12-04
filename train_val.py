@@ -156,24 +156,52 @@ class Trainer(LightningModule):
         dataname_to_idx = {"agedb_30": 0, "cfp_fp": 1, "lfw": 2, "cplfw": 3, "calfw": 4}
         idx_to_dataname = {val: key for key, val in dataname_to_idx.items()}
         test_logs = {}
+        all_embeddings = []
+        all_labels = []
+        all_issame = []
         for dataname_idx in all_dataname_tensor.unique():
             dataname = idx_to_dataname[dataname_idx.item()]
             # per dataset evaluation
             embeddings = all_output_tensor[all_dataname_tensor == dataname_idx].to('cpu').numpy()
             labels = all_target_tensor[all_dataname_tensor == dataname_idx].to('cpu').numpy()
             issame = labels[0::2]
+            
+            all_embeddings.append(embeddings)
+            all_labels.append(labels)
+            all_issame.append(issame)
+            
             tpr, fpr, accuracy, best_thresholds = evaluate_utils.evaluate(embeddings, issame, nrof_folds=10)
             acc, best_threshold = accuracy.mean(), best_thresholds.mean()
 
             num_test_samples = len(embeddings)
+        #    test_logs[f"{dataname}_test_tpr"] = tpr
+         #   test_logs[f"{dataname}_test_fpr"] = fpr
             test_logs[f'{dataname}_test_acc'] = acc
             test_logs[f'{dataname}_test_best_threshold'] = best_threshold
             test_logs[f'{dataname}_num_test_samples'] = num_test_samples
 
-        test_logs['test_acc'] = np.mean([
-            test_logs[f'{dataname}_test_acc'] for dataname in dataname_to_idx.keys()
-            if f'{dataname}_test_acc' in test_logs
-        ])
+        
+          # Concatenate results from all datasets
+        all_embeddings = np.concatenate(all_embeddings)
+        all_labels = np.concatenate(all_labels)
+        all_issame = np.concatenate(all_issame)
+
+        print(f"all_embedding: {all_embeddings.shape}, all_lables: {all_labels.shape}, all_isame: {all_issame.shape}")
+          # Calculate the best threshold across all datasets
+        global_tpr, global_fpr, global_accuracy, global_best_threshold = evaluate_utils.evaluate(all_embeddings, all_issame, nrof_folds=10)
+        global_acc = global_accuracy.mean()
+        global_threshold = global_best_threshold.mean()
+
+        print(f"{global_tpr.shape}, {global_fpr.shape}m {global_accuracy.shape}, {global_best_threshold}")
+
+        test_logs['global_test_acc'] = global_acc
+        test_logs['global_test_best_threshold'] = global_threshold
+        test_logs['global_num_test_samples'] = len(all_embeddings)
+        
+        #test_logs['test_acc'] = np.mean([
+        #    test_logs[f'{dataname}_test_acc'] for dataname in dataname_to_idx.keys()
+        #    if f'{dataname}_test_acc' in test_logs
+        #])
         test_logs['epoch'] = self.current_epoch
 
         for k, v in test_logs.items():

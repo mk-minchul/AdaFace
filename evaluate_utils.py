@@ -7,6 +7,7 @@ from sklearn.model_selection import KFold
 from sklearn.decomposition import PCA
 import sklearn
 from scipy import interpolate
+from sklearn.metrics.pairwise import cosine_similarity
 
 def get_val_data(data_path):
     agedb_30, agedb_30_issame = get_val_pair(data_path, 'agedb_30')
@@ -95,8 +96,11 @@ def calculate_roc(thresholds, embeddings1, embeddings2, actual_issame, nrof_fold
     dist = None
 
     if pca == 0:
-        diff = np.subtract(embeddings1, embeddings2)
-        dist = np.sum(np.square(diff), 1)
+        #diff = np.subtract(embeddings1, embeddings2)
+        #dist = np.sum(np.square(diff), 1)
+        # Calculate cosine similarity
+        dist = cosine_similarity(embeddings1, embeddings2)
+        dist = np.diag(dist)
 
     for fold_idx, (train_set, test_set) in enumerate(k_fold.split(indices)):
         # print('train_set', train_set)
@@ -137,7 +141,8 @@ def calculate_roc(thresholds, embeddings1, embeddings2, actual_issame, nrof_fold
 
 
 def calculate_accuracy(threshold, dist, actual_issame):
-    predict_issame = np.less(dist, threshold)
+    #predict_issame = np.less(dist, threshold)
+    predict_issame = np.greater(dist, threshold)
     tp = np.sum(np.logical_and(predict_issame, actual_issame))
     fp = np.sum(np.logical_and(predict_issame, np.logical_not(actual_issame)))
     tn = np.sum(np.logical_and(np.logical_not(predict_issame), np.logical_not(actual_issame)))

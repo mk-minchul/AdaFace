@@ -121,6 +121,9 @@ def get_num_class(hparams):
     elif 'webface42m' in hparams.train_data_path.lower():
         assert not hparams.train_data_subset
         class_num = 2059906
+    elif 'glint360k' in hparams.train_data_path.lower():
+        assert not hparams.train_data_subset
+        class_num = 360232
     else:
         raise ValueError('Check your train_data_path', hparams.train_data_path)
 
