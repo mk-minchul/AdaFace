@@ -24,11 +24,14 @@ The paper (https://arxiv.org/abs/2204.00964) is presented in CVPR 2022 (Oral).
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adaface-quality-adaptive-margin-for-face/surveillance-to-surveillance-on-ijb-s)](https://paperswithcode.com/sota/surveillance-to-surveillance-on-ijb-s?p=adaface-quality-adaptive-margin-for-face)
 
 ### Repository Updates
+- [x] [CVLFace](https://github.com/mk-minchul/CVLface) is the **new official repository** for AdaFace (supports various architectures such as ViT, SWIN-ViT, KP-RPE, etc).
+- [x] Added PartialFC AdaFace implementation at [CVLFace](https://github.com/mk-minchul/CVLface) (and much more functionalities related to face recognition for conducting research).
 - [x] Pytorch Lightning 1.8 compatibility is tested. 
 - [x] 5 Minute video presentation uploaded.
 - [x] Added the option to directly train with InsightFace dataset (train.rec) files without extracting images.
 
 ### News
+- You can also check out our new paper `KP-RPE: KeyPoint Relative Position Encoding for Face Recognition` [Paper](https://arxiv.org/pdf/2403.14852) [Video](https://www.youtube.com/watch?v=sVFswDdPUH4) [Code](https://github.com/mk-minchul/CVLface) for facial landmark assisted face recognition. TLDR: Face recognition with facial landmark for alignment robustness. **(SoTA in TinyFace, IJB-S)**. 
 - You can also check out our new paper `Cluster and Aggregate (CAFace, NeurIPS2022)` [Link](https://paperswithcode.com/paper/cluster-and-aggregate-face-recognition-with) for video based face recognition. TLDR: Face recognition with long probe videos.
 
 ### 5 Minute Video Presentation
