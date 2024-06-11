@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import evaluate_utils
 from dataset.image_folder_dataset import CustomImageFolderDataset
-from dataset.five_validation_dataset import FiveValidationDataset
+from dataset.five_validation_dataset import MultipleValidationDataset
 from dataset.record_dataset import AugmentRecordDataset
 
 
@@ -27,7 +27,6 @@ class DataModule(pl.LightningDataModule):
         self.photometric_augmentation_prob = kwargs['photometric_augmentation_prob']
         self.swap_color_channel = kwargs['swap_color_channel']
         self.use_mxrecord = kwargs['use_mxrecord']
-
         concat_mem_file_name = os.path.join(self.data_root, self.val_data_path, 'concat_validation_memfile')
         self.concat_mem_file_name = concat_mem_file_name
 
@@ -41,8 +40,16 @@ class DataModule(pl.LightningDataModule):
         if not os.path.isfile(self.concat_mem_file_name):
             # create a concat memfile
             concat = []
-            for key in ['agedb_30', 'cfp_fp', 'lfw', 'cplfw', 'calfw']:
-                np_array, issame = evaluate_utils.get_val_pair(path=os.path.join(self.data_root, self.val_data_path),
+            keys= []#['agedb_30', 'cfp_fp', 'lfw', 'cplfw', 'calfw']
+            validation_sets_path = os.path.join(self.data_root, self.val_data_path)
+            for file in os.listdir(validation_sets_path):
+                if file[-4:] == ".bin":
+                    key = ".".join(file.split(".")[:-1] )
+                    if key not in keys:
+                        keys.append(key)
+            print("collected keys data.py ", keys)
+            for key in keys:
+                np_array, issame = evaluate_utils.get_val_pair(path=validation_sets_path,
                                                                name=key,
                                                                use_memfile=False)
                 concat.append(np_array)
@@ -69,7 +76,6 @@ class DataModule(pl.LightningDataModule):
                 with open('assets/ms1mv2_train_subset_index.txt', 'r') as f:
                     subset_index = [int(i) for i in f.read().split(',')]
                     self.subset_ms1mv2_dataset(subset_index)
-
             print('creating val dataset')
             self.val_dataset = val_dataset(self.data_root, self.val_data_path, self.concat_mem_file_name)
 
@@ -127,6 +133,7 @@ def train_dataset(data_root, train_data_path,
                   output_dir):
 
     train_transform = transforms.Compose([
+        transforms.Resize((112,112), antialias=True),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
@@ -157,32 +164,15 @@ def train_dataset(data_root, train_data_path,
 
 def val_dataset(data_root, val_data_path, concat_mem_file_name):
     val_data = evaluate_utils.get_val_data(os.path.join(data_root, val_data_path))
-    # theses datasets are already normalized with mean 0.5, std 0.5
-    age_30, cfp_fp, lfw, age_30_issame, cfp_fp_issame, lfw_issame, cplfw, cplfw_issame, calfw, calfw_issame = val_data
-    val_data_dict = {
-        'agedb_30': (age_30, age_30_issame),
-        "cfp_fp": (cfp_fp, cfp_fp_issame),
-        "lfw": (lfw, lfw_issame),
-        "cplfw": (cplfw, cplfw_issame),
-        "calfw": (calfw, calfw_issame),
-    }
-    val_dataset = FiveValidationDataset(val_data_dict, concat_mem_file_name)
+    val_dataset = MultipleValidationDataset(val_data, concat_mem_file_name)
 
     return val_dataset
 
 
-def test_dataset(data_root, val_data_path, concat_mem_file_name):
+def test_dataset(data_root, val_data_path, concat_mem_file_name, output_dir = None):
     val_data = evaluate_utils.get_val_data(os.path.join(data_root, val_data_path))
     # theses datasets are already normalized with mean 0.5, std 0.5
-    age_30, cfp_fp, lfw, age_30_issame, cfp_fp_issame, lfw_issame, cplfw, cplfw_issame, calfw, calfw_issame = val_data
-    val_data_dict = {
-        'agedb_30': (age_30, age_30_issame),
-        "cfp_fp": (cfp_fp, cfp_fp_issame),
-        "lfw": (lfw, lfw_issame),
-        "cplfw": (cplfw, cplfw_issame),
-        "calfw": (calfw, calfw_issame),
-    }
-    val_dataset = FiveValidationDataset(val_data_dict, concat_mem_file_name)
+    val_dataset = MultipleValidationDataset(val_data, concat_mem_file_name)
     return val_dataset
 
 

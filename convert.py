@@ -3,7 +3,6 @@ import argparse
 import mxnet as mx
 from tqdm import tqdm
 from PIL import Image
-import bcolz
 import pickle
 import cv2
 import numpy as np
@@ -49,9 +48,11 @@ def save_rec_to_img_dir(rec_path, swap_color_channel=False, save_as_png=False):
             img.save(img_save_path, quality=95)
 
 def load_bin(path, rootdir, image_size=[112,112]):
+    import os
 
     test_transform = trans.Compose([
                 trans.ToTensor(),
+                trans.Resize(image_size, antialias=True),
                 trans.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
             ])
     if not rootdir.exists():
@@ -87,11 +88,13 @@ if __name__ == '__main__':
         save_rec_to_img_dir(rec_path, swap_color_channel=args.swap_color_channel)
 
     if args.make_validation_memfiles:
+        import bcolz
+
         # for saving memory usage during training
         # bin_files = ['agedb_30', 'cfp_fp', 'lfw', 'calfw', 'cfp_ff', 'cplfw', 'vgg2_fp']
         bin_files = list(filter(lambda x: os.path.splitext(x)[1] in ['.bin'], os.listdir(args.rec_path)))
         bin_files = [i.split('.')[0] for i in bin_files]
-
         for i in range(len(bin_files)):
+            print("dealing with ", bin_files[i], flush=True)
             load_bin(rec_path/(bin_files[i]+'.bin'), rec_path/bin_files[i])
 
