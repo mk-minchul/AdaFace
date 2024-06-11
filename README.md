@@ -89,6 +89,23 @@ conda activate adaface
 conda install scikit-image matplotlib pandas scikit-learn 
 pip install -r requirements.txt
 ```
+<details>
+<summary>
+<big><b>Docker Installation</b></big>
+</summary> 
+Note: Install <a href="https://github.com/NVIDIA/nvidia-container-toolkit.git">NVIDIA Container Toolkit</a>  
+
+- Install 
+```js
+sudo docker build -t adaface .
+```
+- Run
+```js
+sudo docker run --gpus all -v ${PWD}:/adaface adaface
+```
+
+</details> 
+
 
 # Train (Preapring Dataset and Training Scripts)
 - Please refer to [README_TRAIN.md](./README_TRAIN.md)
@@ -112,7 +129,7 @@ This is different from the InsightFace released model which uses RGB color chann
 | R100 | WebFace12M | [gdrive](https://drive.google.com/file/d/1dswnavflETcnAuplZj1IOKKP0eM8ITgT/view?usp=sharing) |
 
 
-# Inferece
+# Inference
 
 ### Example using provided sample images
 AdaFace takes input images that are preproccsed. 
