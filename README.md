@@ -90,7 +90,7 @@ conda install scikit-image matplotlib pandas scikit-learn
 pip install -r requirements.txt
 ```
 
-# Train (Preapring Dataset and Training Scripts)
+# Train (Preparing Dataset and Training Scripts)
 - Please refer to [README_TRAIN.md](./README_TRAIN.md)
 - [IMPORTANT] Note that our implementation assumes that input to the model is `BGR` color channel as in `cv2` package. InsightFace models assume `RGB` color channel as in `PIL` package. So all our evaluation code uses `BGR` color channel with `cv2` package.
 
